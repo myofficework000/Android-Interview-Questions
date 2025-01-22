@@ -1,0 +1,38 @@
+# Senior Android Developer Interview Questions
+
+## Table of Contents
+- [MVVM Architecture & Clean Code](#mvvm-architecture--clean-code)
+- [Dependency Injection (DI) & Retrofit](#dependency-injection-di--retrofit)
+- [Accessibility & Testing](#accessibility--testing)
+
+
+## MVVM Architecture & Clean Code
+
+1. How do you ensure separation of concerns and maintainability in an MVVM-based Android app? Can you provide an example where improper separation caused issues?
+2. In a complex app with multiple ViewModels sharing business logic, how would you avoid code duplication while adhering to the Clean Code principles?
+3. How do you handle long-running operations in an MVVM architecture without blocking the UI, and what are the potential pitfalls of incorrect coroutine scope usage?
+4. Describe a scenario where the repository pattern introduced unnecessary complexity, and how would you refactor it to align with Clean Architecture?
+5. Explain how to efficiently manage the ViewModel lifecycle in scenarios such as configuration changes, background tasks, and process death.
+
+
+
+## Dependency Injection (DI) & Retrofit
+
+1. What are the key differences between Dagger, Dagger Hilt, and Koin? Which one would you choose for a large-scale project and why?
+2. How would you structure a multi-module Android project using Dependency Injection while ensuring modularity and scalability?
+3. Explain how Retrofit handles threading internally, and how would you optimize network requests for large-scale applications with high API traffic?
+4. How do you handle API response caching efficiently with Retrofit and OkHttp while ensuring data consistency across app sessions?
+5. Describe a complex dependency graph you've encountered in an Android project and how you resolved circular dependencies using Dagger-Hilt.
+
+
+
+## Accessibility & Testing
+
+1. What are the key accessibility considerations when designing an Android app for users with visual impairments, and how would you test compliance with accessibility guidelines?
+2. How would you write unit tests for a ViewModel that interacts with both a repository and a network API, ensuring high test coverage?
+3. Explain the difference between unit tests, integration tests, and UI tests in Android, and provide a real-world example of when to use each.
+4. What strategies do you use to mock dependencies effectively in Android unit tests, and what are the potential downsides of excessive mocking?
+5. How would you handle testing asynchronous operations in ViewModels that use Kotlin Coroutines, ensuring reliable and repeatable test results?
+
+
+Good luck with your interview preparation!
