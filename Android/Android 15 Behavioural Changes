@@ -1,0 +1,184 @@
+Major Behavioral Changes in Android 15
+
+1. Foreground Services
+Data Sync and Media Processing Service Timeouts:
+Services of type dataSync and mediaProcessing are limited to 6 hours per 24-hour period.
+If exceeded, the system invokes Service.onTimeout(int, int) and logs exceptions if stopSelf() isn't called.
+Implication: Long-running sync or media operations must use alternatives like WorkManager for tasks requiring longer execution times.
+New Service Type: mediaProcessing added for tasks like media transcoding or conversion.
+Restrictions on BOOT_COMPLETED Receivers:
+Foreground service types restricted (e.g., dataSync, mediaPlayback, phoneCall, etc.) from being started by BOOT_COMPLETED receivers.
+Action: Use alternatives like WorkManager for boot-related tasks.
+SYSTEM_ALERT_WINDOW Changes:
+Apps with SYSTEM_ALERT_WINDOW permission can only start foreground services if they show a visible overlay window (e.g., TYPE_APPLICATION_OVERLAY).
+This limits misuse of overlays to stealthily start services.
+2. Do Not Disturb (DND) Policy
+Apps targeting Android 15 can no longer globally modify or deactivate DND settings.
+Apps must contribute an AutomaticZenRule that the system uses to merge policies under the "most-restrictive-policy-wins" rule.
+3. OpenJDK API Updates
+Stricter Validation in String.format APIs:
+Misconfigured format strings (e.g., invalid argument indexes like %0) now throw exceptions (IllegalFormatArgumentIndexException).
+Changes in Arrays.asList(...).toArray():
+Now returns an array of type Object[], not the specific element type. Apps need to explicitly specify the array type using Collection.toArray(Object[]).
+
+4. Window Insets and Edge-to-Edge Enforcement
+Apps targeting Android 15 are edge-to-edge by default, requiring developers to handle insets.
+Status Bar and Navigation Bar Changes:
+Transparent by default, content draws behind system bars unless insets are handled.
+Deprecation: APIs like setStatusBarColor and setNavigationBarColor are deprecated (gesture navigation) or modified (3-button navigation).
+Display Cutout Changes:
+Non-floating windows must use LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS.
+Recommended Actions:
+Use WindowInsets or libraries like Material3 for inset handling.
+Test screens with navigation bars and cutouts to avoid UI issues.
+
+5. Safer Intents
+Intents must now:
+Match declared intent filters of the target component.
+Contain an action for better security and intent validation.
+Testing: Use StrictMode.detectUnsafeIntentLaunch() to identify potential issues.
+
+6. TextView and Font Layout Changes
+elegantTextHeight Default:
+Now true by default for better vertical text alignment, especially for scripts like Arabic, Thai, and Kannada.
+Apps can revert to compact font rendering by explicitly setting elegantTextHeight to false.
+Text Width Adjustments for Complex Scripts:
+New setUseBoundsForWidth API ensures sufficient width for complex fonts to prevent clipping.
+Padding Option: setShiftDrawingOffsetForStartOverhang adds extra padding for better alignment.
+
+7. Restrictions on Audio Focus
+Apps can request audio focus only if:
+They are the foreground app or running a foreground service.
+Impact: Background apps trying to request focus will fail with AUDIOFOCUS_REQUEST_FAILED.
+
+8. Locale-Sensitive UI Enhancements
+EditText Locale-Specific Line Heights:
+EditText elements now consider the default line height for the current locale.
+Developers can opt out using useLocalePreferredLineHeightForMinimum="false".
+
+9. Security Enhancements
+Restricted TLS Versions:
+TLS 1.0 and 1.1 are no longer supported. Apps must use TLS 1.2 or higher.
+Background Activity Launch Restrictions:
+Stricter controls on background activity launches to prevent phishing and privilege abuse.
+
+10. Non-SDK API Restrictions
+Updated Lists: Non-SDK interfaces are further restricted, ensuring apps rely on public APIs.
+Action: Use tools like lint to identify and migrate away from non-SDK APIs.
+
+Testing Tools
+For all changes, Android 15 offers ADB flags to enable or disable specific behaviors for testing purposes, such as:
+Enable foreground service restrictions:
+bash
+CopyEdit
+adb shell am compat enable FGS_INTRODUCE_TIME_LIMITS your.package.name
+
+
+Test BOOT_COMPLETED restrictions:
+bash
+CopyEdit
+adb shell am compat enable FGS_BOOT_COMPLETED_RESTRICTIONS your.package.name
+
+
+
+Summary of Actions for Developers
+Migrate long-running services to WorkManager where possible.
+Update UI layouts for edge-to-edge requirements.
+Validate and fix any String.format issues.
+Test TextView and EditText layouts for new defaults.
+Adopt AutomaticZenRules for DND modifications.
+Use updated SDK alternatives for previously used non-SDK APIs.
+1. UI and System APIs
+Navigation Bar and Status Bar APIs
+Deprecated APIs:
+R.attr#navigationBarColor (for gesture navigation).
+R.attr#navigationBarDividerColor.
+R.attr#statusBarColor.
+Window#setNavigationBarColor (gesture navigation).
+Window#setNavigationBarDividerColor.
+Window#setStatusBarColor.
+Window#setDecorFitsSystemWindows.
+Window#getNavigationBarColor, Window#getNavigationBarDividerColor, and Window#getStatusBarColor.
+Reason:
+These APIs no longer affect how content is rendered in edge-to-edge layouts or gesture navigation.
+They are partially replaced by new default behaviors or insets handling.
+Behavioral Changes in 3-Button Navigation:
+For 3-button navigation, R.attr#navigationBarColor and Window#setNavigationBarColor are still supported but now default to 80% opacity. These APIs are not fully removed but deprecated in favor of more consistent edge-to-edge behaviors.
+
+2. Text Rendering and Layout
+elegantTextHeight Default:
+The elegantTextHeight attribute is now true by default for improved rendering of vertical text metrics.
+Impact: Developers should test scripts like Arabic, Thai, or Kannada.
+Alternative: If backward compatibility is needed, set elegantTextHeight="false" explicitly. However, this behavior is unlikely to be supported in future releases.
+
+3. Do Not Disturb (DND)
+Global Modification of DND Settings
+Deprecated APIs:
+Modifications to the global state of Do Not Disturb (DND) are deprecated.
+Affects calls to NotificationManager.setInterruptionFilter() and NotificationManager.setNotificationPolicy().
+Alternative:
+Apps must now use AutomaticZenRule to contribute DND rules rather than modifying global settings.
+
+4. Foreground Services
+Legacy Foreground Service Exemptions
+Exemptions that allowed apps to start foreground services while holding the SYSTEM_ALERT_WINDOW permission are deprecated.
+New Requirements:
+Apps must now show a visible overlay window before starting a foreground service.
+
+5. Locale Handling
+Legacy Language Codes
+Deprecated:
+Use of outdated language codes (iw, ji, in) for Hebrew, Yiddish, and Indonesian.
+Replacement:
+ISO 639-1 codes (he, yi, id) must be used.
+
+6. OpenJDK and Core Libraries
+Deprecated String Formatting
+String.format() and Formatter.format() APIs:
+Deprecated ability to use invalid formatting specifiers, such as %0.
+Stricter validation in place, raising exceptions for misconfigured arguments.
+
+7. WindowInsets Configuration
+Non-Edge-to-Edge Modes
+Deprecated:
+Non-floating windows that use layoutInDisplayCutoutMode with values like SHORT_EDGES, NEVER, or DEFAULT.
+Required:
+Must use LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS to avoid compatibility issues in edge-to-edge layouts.
+
+8. Audio Focus
+Apps targeting Android 15 can no longer request audio focus unless:
+They are the topmost app or running a foreground service.
+Deprecated Behavior:
+Apps in the background that previously requested audio focus will now fail.
+
+9. Configuration API
+Deprecated:
+Use of Configuration.screenWidthDp, Configuration.screenHeightDp, and Configuration.smallestScreenWidthDp for layout calculations.
+These values now include system bars, potentially breaking layouts.
+Alternative:
+Use APIs like WindowInsets, ViewGroup, or WindowMetricsCalculator.
+
+10. Non-SDK Interfaces
+Expansion of Non-SDK API Restrictions:
+Several private APIs previously accessible are now fully deprecated and restricted.
+Apps relying on non-SDK APIs must migrate to public SDK alternatives.
+Developer Tool:
+Use the --strict lint option to detect usage of non-SDK APIs.
+
+Summary of Key Deprecations
+Deprecated API/Feature
+Replacement or Alternative
+Window#setNavigationBarColor
+Handle insets and edge-to-edge layouts using WindowInsets.
+Modifications to global DND state
+Use AutomaticZenRule for contributing app-specific DND rules.
+Configuration.screenWidthDp & others
+Use WindowInsets or WindowMetricsCalculator for layout and resource handling.
+Legacy language codes (iw, ji, in)
+Use ISO 639-1 codes (he, yi, id).
+Starting FGS with SYSTEM_ALERT_WINDOW
+Apps must show a visible overlay before starting a foreground service.
+Deprecated non-SDK interfaces
+Use public SDK alternatives. Request a new API if no alternative exists.
+
+
