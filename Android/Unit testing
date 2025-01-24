@@ -1,0 +1,19 @@
+What is MockK, and how does it help in unit testing Android applications?
+
+How do you mock a dependency using MockK in an Android unit test? Provide an example.
+
+What is the difference between mockk(), spyk(), and relaxed mocks in MockK?
+
+How do you mock suspend functions with MockK in Kotlin? Explain with an example.
+
+What is the purpose of every and verify in MockK, and how are they used in unit tests?
+
+How can you mock static methods and singleton objects using MockK?
+
+How do you verify the order and exact number of calls made to a mocked function in MockK?
+
+What are the differences between MockK and Mockito when writing unit tests for Android?
+
+How do you handle exceptions in unit tests using MockK? Provide an example.
+
+What are the common best practices to follow when writing unit tests with MockK in Android?
