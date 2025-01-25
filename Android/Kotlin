@@ -1,0 +1,162 @@
+# Top 15 Kotlin Interview Questions and Answers for Android
+
+## 1. Kotlin Basics
+
+**Q1: What are the key features of Kotlin that make it preferred over Java for Android development?**  
+**A:** Kotlin offers several advantages over Java, including:  
+- Concise and expressive syntax.
+- Null safety to prevent `NullPointerException`.
+- Interoperability with Java code.
+- Extension functions for enhanced functionality.
+- Coroutines for asynchronous programming.
+- Smart casting to reduce boilerplate code.
+
+---
+
+**Q2: Explain the difference between `val` and `var` in Kotlin. When should you use each?**  
+**A:**  
+- `val` (immutable): Read-only variable, cannot be reassigned after initialization. Use it for constants or values that don't change.  
+  ```kotlin
+  val name = "John"
+
+var age = 25
+
+Q3: What are data classes in Kotlin, and how do they differ from regular classes?
+A: Data classes in Kotlin automatically provide utility functions such as toString(), equals(), and hashCode(). They are useful for holding data and reducing boilerplate code.
+Example:
+data class User(val name: String, val age: Int)
+
+Q4: How does Kotlin handle null safety, and what are ?. and !! operators?
+A: Kotlin prevents null pointer exceptions with its null safety features.
+
+?. (safe call): Calls a method only if the value is not null.
+val length = name?.length
+!! (non-null assertion): Forces a null value to throw an exception if it's null.
+val length = name!!.length
+
+Q5: What is the difference between apply, let, run, with, and also in Kotlin?
+A: These are scope functions that simplify operations on objects:
+
+apply: Used for initializing an object and returns the same object.
+let: Used for performing operations on a nullable object.
+run: Combines object initialization and result computation.
+with: Used when calling multiple methods on an object.
+also: Useful for additional operations like logging.
+
+val user = User("John", 25).apply { println(name) }
+
+2. Kotlin Functions & Scope
+Q6: What are higher-order functions in Kotlin? Provide an example of how they are used in Android.
+A: A higher-order function is a function that takes another function as a parameter or returns one.
+
+Example in Android:
+
+fun processList(items: List<String>, action: (String) -> Unit) {
+    for (item in items) {
+        action(item)
+    }
+}
+processList(listOf("A", "B", "C")) { println(it) }
+
+
+Q7: What are inline functions in Kotlin? When should they be used?
+A: Inline functions reduce the overhead of higher-order functions by inlining function code at call sites. They should be used when passing lambdas to avoid runtime overhead.
+
+Example:
+inline fun performAction(action: () -> Unit) {
+    action()
+}
+
+Q8: Explain the concept of extension functions in Kotlin. How can they be useful in Android?
+A: Extension functions allow adding new functionality to existing classes without modifying their source code.
+
+Example in Android:
+
+fun TextView.setTextColorRed() {
+    this.setTextColor(Color.RED)
+}
+
+Q9: How does Kotlin support default and named arguments in functions? Provide an example.
+A: Kotlin allows specifying default values and calling functions with named arguments.
+
+Example:
+
+fun greet(name: String = "Guest", age: Int = 18) {
+    println("Hello $name, you are $age years old")
+}
+greet(age = 25, name = "Alice")
+
+Q10: What are coroutines in Kotlin, and how do they improve asynchronous programming in Android?
+A: Coroutines provide a way to perform asynchronous operations without blocking the main thread. They are lightweight and handle background tasks efficiently.
+
+Example:
+
+GlobalScope.launch {
+    val result = fetchData()
+    println(result)
+}
+
+3. Kotlin OOP & Advanced Concepts
+Q11: Explain the difference between open, sealed, and abstract classes in Kotlin.
+A:
+
+open: Allows a class to be inherited.
+sealed: Restricts class hierarchy to defined subclasses.
+abstract: Cannot be instantiated, meant to be subclassed.
+Example:
+
+open class Animal
+sealed class Shape
+abstract class Vehicle
+
+Q12: What are companion objects in Kotlin, and how do they compare to static methods in Java?
+A: Companion objects allow defining static-like members inside a class. They replace Java’s static methods.
+
+Example:
+
+class Utils {
+    companion object {
+        fun printMessage() = println("Hello")
+    }
+}
+Utils.printMessage()
+
+Q13: How does delegation work in Kotlin? Give an example of delegation in Android development.
+A: Delegation allows a class to delegate responsibilities to another class.
+
+Example using Android SharedPreferences:
+
+class PreferencesHelper(context: Context) {
+    private val prefs = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+    var username: String by prefs.stringDelegate("username", "")
+}
+
+Q14: What is the purpose of the suspend keyword in Kotlin coroutines? How does it work?
+A: The suspend keyword indicates that a function can be paused and resumed later without blocking the thread.
+
+Example:
+
+suspend fun fetchData(): String {
+    delay(1000)
+    return "Data fetched"
+}
+
+Q15: What is Flow in Kotlin, and how is it different from LiveData or RxJava?
+A: Flow is a cold asynchronous data stream, designed to emit multiple values sequentially, and supports operations like transformation and filtering. Unlike LiveData, it supports coroutines, and unlike RxJava, it is lighter and built-in for Kotlin.
+
+Example:
+
+flow {
+    emit("Item 1")
+    delay(1000)
+    emit("Item 2")
+}.collect { println(it) }
+
+
+
+
+
+
+
+
+
