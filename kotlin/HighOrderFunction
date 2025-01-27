@@ -1,0 +1,13 @@
+1. Transform and Filter List Using Higher-Order Functions
+Question:
+Write a Kotlin function named processNumbers that takes a list of integers and two higher-order functions:
+
+A transformation function (Int) -> Int to modify each element.
+A filter function (Int) -> Boolean to remove unwanted elements.
+Your function should apply the transformation first, then filter the numbers, and finally return the processed list.
+
+Example Input:
+
+val numbers = listOf(1, 2, 3, 4, 5)
+val result = processNumbers(numbers, { it * 2 }, { it % 4 != 0 })
+println(result)
