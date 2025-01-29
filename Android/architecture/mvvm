@@ -1,10 +1,99 @@
 MVVM
 
 1. How do you implement MVVM in your app or walk me through MVVM implementation
+Answer:
+
+In MVVM, we separate concerns into three layers: Model, ViewModel, and View to improve maintainability and testability.
+
+Model:
+This layer handles data sources, such as API calls, databases, or local storage.
+It provides data to the ViewModel via repositories, ensuring the UI layer doesn’t directly access business logic.
+
+ViewModel:
+Acts as an intermediary between the View and Model.
+It holds UI-related data, handles business logic, and survives configuration changes.
+Uses LiveData (or StateFlow) to expose data to the UI reactively.
+
+View:
+The UI layer (Activity/Fragment/Composable) observes ViewModel’s LiveData to get updates.
+It reacts to UI state changes but does not handle any business logic.
+Ensures a one-way data flow, improving testability.
+
+Workflow Example:
+The ViewModel fetches data from the Repository (inside the Model layer).
+The Repository gets data from a local database or API.
+The ViewModel processes and exposes the data to the View.
+The View (UI) observes LiveData and updates accordingly.
+
 2. What are the advantages of MVVM?
-3. What is LiveData and Advantages of LiveData
+Answer:
+MVVM provides multiple benefits over traditional architectures like MVC:
+
+Separation of Concerns:
+UI logic (View), business logic (ViewModel), and data handling (Model) are independent, making the code modular.
+
+Better Testability:
+The ViewModel doesn’t depend on the UI, making unit testing more effective.
+
+Improved Lifecycle Management:
+The ViewModel survives configuration changes like screen rotations, preventing data loss.
+
+One-Way Data Flow:
+The ViewModel exposes immutable LiveData (or StateFlow) that the UI observes, reducing unintended side effects.
+
+Scalability and Maintainability:
+Code is easier to manage, refactor, and scale as app complexity grows.
+
+3. What is LiveData and Advantages of LiveData?
+Answer:
+LiveData is a lifecycle-aware observable data holder used to update the UI reactively.
+Advantages of LiveData:
+
+Lifecycle Awareness:
+LiveData only updates active UI components (Activity/Fragment), preventing memory leaks.
+
+Automatic UI Updates:
+When data changes, the UI updates automatically, reducing the need for manual UI handling.
+
+No Memory Leaks:
+Lifecycle-aware behavior ensures LiveData doesn’t retain references to destroyed UI components.
+
+Thread Safety:
+LiveData can be updated on background threads, and it posts updates safely to the main thread.
+
+Better Decoupling:
+The ViewModel exposes LiveData, and the View observes it, ensuring a one-way dependency from UI to business logic.
+
 4. What are the disadvantages of LiveData?
+Answer:
+Despite its advantages, LiveData has some limitations:
+
+Not Suitable for One-Time Events (Single Event UI Handling):
+LiveData retains data even after consumption, leading to unintended re-triggering when observing.
+Solution: Use EventWrapper or alternatives like StateFlow.
+
+Not Ideal for Complex Data Transformations:
+LiveData requires MediatorLiveData for transformations, which can be cumbersome.
+
+Limited to UI State Management:
+LiveData is tightly coupled with the lifecycle, making it less useful for non-UI-related business logic.
+Solution: Use Flow or RxJava for more flexible reactive programming.
+
 5. What is the relationship between viewModel and activity life cycle events?
+Answer:
+
+ViewModel Survives Configuration Changes:
+When an Activity is recreated (e.g., due to rotation), the ViewModel instance persists, preventing data loss.
+
+ViewModel is Scoped to Lifecycle Owners:
+It is tied to the Activity/Fragment lifecycle but not destroyed with UI changes unless explicitly cleared.
+
+ViewModel Cleared on Final Activity Destruction:
+When an Activity is fully destroyed (e.g., user navigates back), ViewModel’s onCleared() is called to release resources.
+
+ViewModel Prevents Memory Leaks:
+Unlike an Activity, which holds references to UI components, the ViewModel exists independently and holds only LiveData or StateFlow references, avoiding leaks.
+
 6. LiveData vs MutableLiveData vs ObservableFiled
 7. setValue() vs postValue() method of MutableLiveDate object
 8. What is DataBinding?
