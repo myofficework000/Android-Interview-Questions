@@ -1,1 +1,16 @@
 Clean code
+
+1. How do you ensure separation of concerns and maintainability in an MVVM-based Android app? Can you provide an example where improper separation caused issues?
+2. In a complex app with multiple ViewModels sharing business logic, how would you avoid code duplication while adhering to the Clean Code principles?
+3. How do you handle long-running operations in an MVVM architecture without blocking the UI, and what are the potential pitfalls of incorrect coroutine scope usage?
+4. Describe a scenario where the repository pattern introduced unnecessary complexity, and how would you refactor it to align with Clean Architecture?
+5. Explain how to efficiently manage the ViewModel lifecycle in scenarios such as configuration changes, background tasks, and process death.
+6. What is Clean Architecture, and why is it used in Android?
+7. How do you structure an Android project using Clean Architecture?
+8. What are the different layers in Clean Architecture, and what belongs in each?
+9. How does Use Case (or Interactor) layer improve code maintainability?
+10. How should ViewModel interact with Use Cases in Clean Architecture?
+11. How do you pass data between layers while maintaining separation of concerns?
+12. What strategies do you use to handle business logic in Clean Architecture?
+13. How do you manage dependency injection in a clean architecture setup?
+
