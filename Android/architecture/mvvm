@@ -1,1 +1,31 @@
-mvvm
+MVVM
+
+1. How do you implement MVVM in your app or walk me through MVVM implementation
+2. What are the advantages of MVVM?
+3. What is LiveData and Advantages of LiveData
+4. What are the disadvantages of LiveData?
+5. What is the relationship between viewModel and activity life cycle events?
+6. LiveData vs MutableLiveData vs ObservableFiled
+7. setValue() vs postValue() method of MutableLiveDate object
+8. What is DataBinding?
+9. What are the advantages of data binding?
+10. What are 1-Way Data Binding and 2-Way Data Binding?
+11. What is BindingAdapter? Why is there a need for BindingAdapter?
+12. How to define BindingAdapter?
+13. How to bind an image url to ImageView to load and display image in ImageView using DataBinding?
+14. What is ViewBinding?
+15. What is the advantage of using ViewModel?
+16. How does view binding work internally?
+17. Walk-through of MVVM implementation with Repository pattern dealing with data in both local and remote data sources.
+18. How would you handle the scenario when the user press home or back button for your viewmodel to make sure the jobs are canceled
+19. Can you use livedata in RoomDB queries? How would you update the change in database to your view?
+20. How would you set up the architecture when you have both remote and local data sources? Would you use a repository or anything?
+21. How to communicate viewmodel and repository once you got the data back
+22. Can you have context object in viewmodel?
+23. Can you have activity context in viewmodel?
+24. Walk-through of DataBinding?
+25. What is SharedViewModel?
+26. Explain how to use a shared view model to send data from one fragment to another fragment in the same activity.
+27. How do we ignore ViewBinding class creation for some layout files?
+28. What is ViewModelFactory and why do we need ViewModelFactory?
+29. What are the differences between MVI and MVVM, and which one would you prefer?  
