@@ -1,10 +1,41 @@
 Clean code
 
 1. How do you ensure separation of concerns and maintainability in an MVVM-based Android app? Can you provide an example where improper separation caused issues?
+Answer:
+MVVM Structure: The View handles UI, the ViewModel manages state and business logic, and the Repository interacts with data sources.
+Maintainability: Ensures modularity, making code testable and reusable.
+Example of Improper Separation: If a ViewModel directly accesses a database instead of using a repository, it violates separation, making testing and refactoring difficult.
+Fix: Introduce a Repository layer to decouple data handling from the ViewModel.
+
 2. In a complex app with multiple ViewModels sharing business logic, how would you avoid code duplication while adhering to the Clean Code principles?
+Answer:
+Use a Base ViewModel: Extract common logic (e.g., error handling, loading states) into a BaseViewModel that other ViewModels extend.
+Create a UseCase Layer: Implement UseCase classes to encapsulate business logic, ensuring reusability across multiple ViewModels.
+Repository Abstraction: Provide shared repository methods to handle common data operations.
+Example: Instead of duplicating API calls in multiple ViewModels, create a FetchDataUseCase that is injected wherever needed.
+
 3. How do you handle long-running operations in an MVVM architecture without blocking the UI, and what are the potential pitfalls of incorrect coroutine scope usage?
+Answer:
+Use Coroutines & Flows: Run background tasks in viewModelScope.launch or LiveData with Flow to prevent UI blocking.
+Pitfalls of Incorrect Scope Usage: Using GlobalScope may cause memory leaks, and launching coroutines in viewModelScope without handling lifecycle changes may lead to crashes.
+Structured Concurrency: Use SupervisorJob and try-catch to handle failures gracefully.
+Example: Fetching user data via Retrofit should be done using viewModelScope.launch { repository.getUserData() }.
+
 4. Describe a scenario where the repository pattern introduced unnecessary complexity, and how would you refactor it to align with Clean Architecture?
+Answer:
+Problem: A repository that simply delegates API calls without adding value introduces redundancy.
+Refactor Approach:
+Remove the repository and inject the API service directly into UseCases if no local caching is needed.
+If data transformation is needed, Refactor the repository to act as a single source of truth by managing local cache and remote data.
+Example: If a repository just calls apiService.getData(), it can be replaced with a UseCase directly invoking the API.
+
 5. Explain how to efficiently manage the ViewModel lifecycle in scenarios such as configuration changes, background tasks, and process death.
+Answer:
+Handling Configuration Changes: Use ViewModelProviders (in Activity) to retain ViewModel state across rotations.
+Handling Background Tasks: Use WorkManager for persistent background tasks rather than Coroutines if the task should survive app termination.
+Managing Process Death: Save state using SavedStateHandle in ViewModel to restore data when the process is recreated.
+Example: When handling user authentication, store session data in SavedStateHandle and persist essential data in Room for long-term state retention.
+
 6. What is Clean Architecture, and why is it used in Android?
 7. How do you structure an Android project using Clean Architecture?
 8. What are the different layers in Clean Architecture, and what belongs in each?
