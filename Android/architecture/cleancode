@@ -37,11 +37,58 @@ Managing Process Death: Save state using SavedStateHandle in ViewModel to restor
 Example: When handling user authentication, store session data in SavedStateHandle and persist essential data in Room for long-term state retention.
 
 6. What is Clean Architecture, and why is it used in Android?
+Answer:
+Definition: Clean Architecture is a software design pattern that separates concerns by organizing code into independent layers, improving maintainability and scalability.
+Key Principle: It follows the Dependency Inversion Principle (DIP), ensuring inner layers don’t depend on outer layers.
+Benefits: Increases testability, modularity, and separation of concerns, making the app easier to extend and modify.
+Usage in Android: Helps manage UI, business logic, and data separately, avoiding tight coupling between components.
+
 7. How do you structure an Android project using Clean Architecture?
+Answer:
+Divide into three primary layers: Presentation, Domain, and Data.
+Follow the Dependency Rule: The inner layer (Domain) should not depend on external layers (Presentation, Data).
+Use interfaces and dependency injection: To decouple business logic from framework dependencies.
+Organize files properly: Keep each layer in separate packages for better modularization.
+
 8. What are the different layers in Clean Architecture, and what belongs in each?
+Answer:
+Presentation Layer: Contains UI elements (Activities, Fragments, Jetpack Compose) and ViewModels that interact with Use Cases.
+Domain Layer: Holds business logic with Use Cases (Interactors) and Entities (core models).
+Data Layer: Manages data sources (APIs, databases, repositories) and provides data to the Domain layer.
+Dependency Flow: Data → Domain → Presentation (UI never directly accesses Data).
+
 9. How does Use Case (or Interactor) layer improve code maintainability?
+Answer:
+Encapsulates Business Logic: Ensures logic is independent of UI and data layers.
+Reusability: Use Cases can be reused across multiple ViewModels or UI components.
+Testability: Business logic can be unit-tested without UI or database dependencies.
+Single Responsibility: Keeps UI and Data layers clean by separating logic into Use Cases.
+
 10. How should ViewModel interact with Use Cases in Clean Architecture?
+Answer:
+Uses Dependency Injection: ViewModel calls Use Cases via constructor injection.
+Asynchronous Execution: Use Cases return results via coroutines (suspend) or reactive streams (Flow).
+State Management: ViewModel exposes UI state (LiveData or StateFlow) based on Use Case results.
+Decoupling UI from Business Logic: ViewModel only handles UI logic, delegating business logic to Use Cases.
+
 11. How do you pass data between layers while maintaining separation of concerns?
+Answer:
+Use Data Models: Convert data from APIs/DB into domain models before passing to Use Cases.
+DTOs vs. Domain Models: Avoid exposing raw data models (like API responses) directly to the UI.
+Repository Pattern: Acts as a bridge between Data and Domain layers to provide clean data handling.
+Unidirectional Flow: Data flows in one direction (Data → Domain → Presentation), ensuring loose coupling.
+
 12. What strategies do you use to handle business logic in Clean Architecture?
+Answer:
+Use Case Pattern: Encapsulate logic inside Use Cases instead of ViewModel or Repositories.
+Error Handling & Validation: Centralize exception handling in Use Cases to keep UI layer clean.
+State Management: Emit states (Loading, Success, Error) via Flow or LiveData.
+Repository Abstraction: Keep Repositories responsible for data fetching, not for applying business logic.
+
 13. How do you manage dependency injection in a clean architecture setup?
+Answer:
+Use Dagger-Hilt or Koin: Popular DI frameworks for injecting dependencies in Android.
+Provide Dependencies per Layer: Inject Use Cases into ViewModels, and Repositories into Use Cases.
+Follow Constructor Injection: Ensures dependencies are passed explicitly and tested easily.
+Singletons & Scoped Instances: Use singletons for app-wide dependencies and scoped instances for lifecycle-specific components.
 
