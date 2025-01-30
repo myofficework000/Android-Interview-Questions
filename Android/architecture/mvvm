@@ -94,11 +94,62 @@ When an Activity is fully destroyed (e.g., user navigates back), ViewModel’s o
 ViewModel Prevents Memory Leaks:
 Unlike an Activity, which holds references to UI components, the ViewModel exists independently and holds only LiveData or StateFlow references, avoiding leaks.
 
-6. LiveData vs MutableLiveData vs ObservableFiled
-7. setValue() vs postValue() method of MutableLiveDate object
+6. LiveData vs MutableLiveData vs ObservableField?
+LiveData:
+A lifecycle-aware observable data holder. It allows UI components to observe changes in data and update automatically. LiveData is immutable, meaning its value cannot be changed directly.
+
+MutableLiveData:
+A subclass of LiveData that allows you to modify its value using setValue() or postValue(). It is commonly used in ViewModels to expose data to the UI.
+
+ObservableField:
+A wrapper class that makes a single field observable. It is part of the Data Binding library and is useful for binding UI elements to data. Unlike LiveData, it is not lifecycle-aware.
+
+7. setValue() vs postValue() method of MutableLiveDate object?
+setValue():
+Updates the value of MutableLiveData synchronously on the main thread.
+Use this method when you are already on the main thread (e.g., in UI events like button clicks).
+
+postValue():
+Updates the value of MutableLiveData asynchronously by posting the update to the main thread. If you call postValue() multiple times in quick succession, only the last value will be dispatched.
+Use this method when you are on a background thread (e.g., in a network callback or coroutine).
+
 8. What is DataBinding?
+Data Binding is a library in Android that allows you to bind UI components in your XML layouts directly to data sources (e.g., ViewModel, LiveData, or ObservableFields) in a declarative way. It eliminates the need for boilerplate code like findViewById and manual UI updates.
+
+Key Features
+Declarative UI: Define binding logic directly in XML.
+Reduced Boilerplate: No need for findViewById or manual UI updates.
+Type Safety: Binding expressions are checked at compile time.
+Reactive Updates: Automatically updates the UI when data changes.
+
 9. What are the advantages of data binding?
+Reduces Boilerplate Code:
+Eliminates the need for findViewById and manual UI updates.
+
+Improved Readability:
+Binding logic is moved to XML, making the code cleaner and easier to understand.
+
+Type Safety:
+Binding expressions are checked at compile time, reducing runtime errors.
+
+Reactive Updates:
+Automatically updates the UI when the underlying data changes (e.g., with LiveData or ObservableField).
+
+2-Way Data Binding:
+Allows the UI to update the data source and vice versa (e.g., for EditText fields).
+
+Better Separation of Concerns:
+Keeps UI logic in XML and business logic in ViewModel or other components.
+
 10. What are 1-Way Data Binding and 2-Way Data Binding?
+1-Way Data Binding:
+Data flows in one direction—from the data source (e.g., ViewModel) to the UI. Changes in the data automatically update the UI, but changes in the UI do not update the data source.
+Displaying data in TextView, ImageView, etc.
+
+2-Way Data Binding:
+Data flows in both directions—from the data source to the UI and from the UI to the data source. Changes in the UI (e.g., user input) automatically update the data source, and changes in the data source automatically update the UI.
+Input fields like EditText where user input needs to update the data source.
+
 11. What is BindingAdapter? Why is there a need for BindingAdapter?
 12. How to define BindingAdapter?
 13. How to bind an image url to ImageView to load and display image in ImageView using DataBinding?
