@@ -1,0 +1,117 @@
+package com.
+
+import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Composable
+fun UniformHeightGrid(items: List<ItemData>, columns: Int = 2) {
+    val rowHeights = remember { mutableStateMapOf<Int, Dp>() }
+    val density = LocalDensity.current
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(columns),
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        userScrollEnabled = false
+    ) {
+        itemsIndexed(items) { index, item ->
+            val rowIndex = index / columns
+            var measuredHeight by remember { mutableStateOf(0.dp) }
+
+            BoxWithConstraints(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.LightGray)
+                    .border(border = BorderStroke(1.dp, Color.Black), shape = RectangleShape)
+                    .padding(8.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onSizeChanged { size ->
+                            val heightInDp = with(density) { size.height.toDp() }
+                            rowHeights[rowIndex] = maxOf(rowHeights[rowIndex] ?: 0.dp, heightInDp)
+                            measuredHeight = heightInDp
+                        }
+                ) {
+                    Image(
+                        painter = painterResource(id = item.imageRes),
+                        contentDescription = "Item Image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp) // Fixed image height
+                            .clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Fit
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = item.text,
+                        fontSize = 16.sp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                // Apply the row's max height
+                val maxHeight = rowHeights[rowIndex] ?: measuredHeight
+                Spacer(Modifier.height(maxHeight))
+            }
+        }
+    }
+}
+
+// Sample Data Class
+data class ItemData(val imageRes: Int, val text: String)
+
+// Preview Example
+@Preview(showBackground = true)
+@Composable
+fun PreviewGrid() {
+    val sampleItems = listOf(
+        ItemData(R.drawable.ic_launcher_foreground, "Short text"),
+        ItemData(R.drawable.ic_launcher_foreground, "This is a longer text that has multiple lines."),
+        ItemData(R.drawable.ic_launcher_foreground, "Medium text example"),
+        ItemData(R.drawable.ic_launcher_foreground, "An even longer text that spans multiple lines in this cell."),
+    )
+
+    UniformHeightGrid(items = sampleItems)
+}
