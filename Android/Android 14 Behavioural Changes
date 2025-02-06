@@ -1,1 +1,97 @@
+# 📱 Android 14 Behavioral Changes  
+
+Android 14 introduces several behavioral changes that may affect your app's functionality and user experience. Below is a summary of key updates developers should be aware of.  
+
+---
+
+## 🛠️ 1. Core Functionality Changes  
+
+### 🔹 Foreground Service Types Requirement  
+- Apps targeting **Android 14 (API level 34)** or higher must specify **at least one foreground service type** for each foreground service.  
+- This ensures services are appropriately categorized, improving system resource management.  
+- 📌 **Reference:** [Android Foreground Services](https://developer.android.com/about/versions/14/behavior-changes-14)  
+
+### 🔹 BLUETOOTH_CONNECT Permission Enforcement  
+- The **BLUETOOTH_CONNECT** permission is now **mandatory** when calling `BluetoothAdapter.getProfileConnectionState()`.  
+- Ensure your app declares this permission in the **AndroidManifest.xml** and checks for it at runtime.  
+- 📌 **Reference:** [Bluetooth Permissions](https://developer.android.com/about/versions/14/behavior-changes-14)  
+
+### 🔹 JobScheduler Behavior Reinforcement  
+- `JobScheduler` now requires `onStartJob()` and `onStopJob()` to return within a few seconds.  
+- Exceeding this time may **trigger an ANR (Application Not Responding) error**.  
+- **ACCESS_NETWORK_STATE permission** is now required when using network constraints.  
+- 📌 **Reference:** [JobScheduler API](https://developer.android.com/about/versions/14/behavior-changes-14)  
+
+---
+
+## 🔒 2. Privacy Enhancements  
+
+### 🔹 Partial Access to Photos and Videos  
+- Users can **grant apps access to specific images and videos** instead of the entire media library.  
+- Use the `READ_MEDIA_VISUAL_USER_SELECTED` permission to support this feature.  
+- 📌 **Reference:** [Scoped Storage Changes](https://developer.android.com/about/versions/14/behavior-changes-14)  
+
+### 🔹 Secure Full-Screen Intent Notifications  
+- Full-screen intent notifications are now **restricted** to apps providing **calling and alarm functionalities**.  
+- **USE_FULL_SCREEN_INTENT permission** is required, and misuse may lead to policy enforcement actions.  
+- 📌 **Reference:** [Notification Policy](https://developer.android.com/about/versions/14/behavior-changes-14)  
+
+---
+
+## 🛡️ 3. Security Updates  
+
+### 🔹 Implicit and Pending Intent Restrictions  
+- **Implicit intents** can **only be sent to exported components**.  
+- For non-exported components, use **explicit intents**.  
+- Creating **mutable pending intents** without specifying a component or package will now result in an **exception**.  
+- 📌 **Reference:** [Intent and PendingIntent Changes](https://developer.android.com/about/versions/14/behavior-changes-14)  
+
+### 🔹 Dynamic Code Loading Restrictions  
+- Apps using **Dynamic Code Loading** must ensure all dynamically loaded files are **marked as read-only**.  
+- Failure to do so will result in a system **exception**.  
+- 📌 **Reference:** [Dynamic Code Execution](https://developer.android.com/about/versions/14/behavior-changes-14)  
+
+---
+
+## ⚙️ 4. Behavior Changes Affecting All Apps  
+
+### 🔹 Exact Alarms Permission  
+- The `SCHEDULE_EXACT_ALARM` permission is **no longer pre-granted** to most newly installed apps targeting **Android 13+**.  
+- Apps must **explicitly request** this permission, and users can manage it in system settings.  
+- 📌 **Reference:** [Exact Alarms](https://developer.android.com/about/versions/14/behavior-changes-all)  
+
+### 🔹 Broadcast Queuing for Cached Apps  
+- **Context-registered broadcasts** may be **queued** while the app is in the **cached state**.  
+- These broadcasts will be **delivered when the app moves to the foreground**.  
+- **Manifest-declared broadcasts** are **not queued**.  
+- 📌 **Reference:** [Broadcast Queuing](https://developer.android.com/about/versions/14/behavior-changes-all)  
+
+### 🔹 Limitation on Killing Background Processes  
+- `killBackgroundProcesses()` API can now **only terminate background processes of the calling app**.  
+- **Attempts to kill other apps’ background processes will no longer work**.  
+- 📌 **Reference:** [Process Management](https://developer.android.com/about/versions/14/behavior-changes-all)  
+
+---
+
+## ☕ 5. OpenJDK 17 Updates  
+
+- Android 14 **aligns with OpenJDK 17**, introducing:  
+  - **Stricter regular expression handling**  
+  - **UUID validation changes**  
+- Ensure your app is tested thoroughly for compatibility.  
+- 📌 **Reference:** [OpenJDK 17 Changes](https://developer.android.com/about/versions/14/behavior-changes-14)  
+
+---
+
+## 📌 Additional Resources  
+- 📖 **Official Documentation:** [Android 14 Behavior Changes](https://developer.android.com/about/versions/14/behavior-changes-14)  
+- 📖 **Migration Guide:** [Android 14 Migration](https://developer.android.com/about/versions/14/migration)  
+
+---
+
+### 🔗 Stay Updated  
+Keeping up with Android 14 changes ensures **better compatibility, security, and performance**. 🚀  
+
+💡 **If you're updating your app for Android 14, review these changes carefully to prevent any unexpected issues!**  
+
 
