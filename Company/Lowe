@@ -1,0 +1,57 @@
+Lowe's
+
+Set 1: 
+asked a lot about build gradle
+how would we get a private sdk into our application?
+what are build variants and flavors?
+what are three parts of a dependency?
+asked how i felt with compose
+what is recomposition
+why would we use MVVM over MVP
+whats the difference between MutableLiveData and MediatorLiveData?
+Recycler view lifecycles and which one diplays the data?
+if our recyclerview is being laggy when scrolling, what approach would you do to smooth it out
+lifecycle of a ViewModel
+how does the ViewModel survive config changes
+whats the difference between Thread (old way) and Coroutines today?
+difference of RxJava and Coroutines?
+asked if i have used NavGraph
+
+Set 2: 
+
+steps to implement fcm
+Explain MVVM with Retrofit
+How are you utilizing the interface as you mentioned it for apiService
+how do you serialize and deserialization of json
+how do you handle offline data and how do you sync up once you are online - (room db and work manager)
+Do we have work manager in kotlin
+why do we use Livedata observers?
+Difference between state flow and live data
+what have you used in jetcompose?
+what is the advantage of using databinding?
+Difference between Java and Kotlin
+what are scope functions in kotlin
+what is sealed class
+how inheritance is different from java to kotlin
+Does kotlin support multiple inheritance
+Did you use coroutines in your project
+how do you switch threads in coroutine
+types of dispatcher
+what is default dispatcher
+what is suspend function
+what does launch and async return
+Android components used in your project (linear layout or constraint layout)
+advantage of constraint layout over linear layout
+can you explain the constraint layout properties ? (like why is it in the middle when we create a layout and how can we align it to left?)
+
+
+Set 3:
+tell me about your recent project experience?
+why are you leaving your current project?
+For Api calls what do you use in Android ?
+Different Http methods for api calls?
+difference between GET and POST
+Does GET have body?
+How do you send info in get?
+how do you implement caching in MVVM?
+Have you done Unit tests in project? How did you write it?
