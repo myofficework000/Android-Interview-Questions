@@ -1,1 +1,13 @@
 Tell me 3 do's and don't of Unit testing, consider you are using mvvm as architecture and mockk as mocking framework.
+Do
+1. Test one thing at a time
+2. Use meaningful test name
+3. Try to cover all scenarios
+4. When working with coroutine, use standardTestDispatcher
+
+
+Don't
+1. Don't test private method directly
+2. Don't mock what you can easily instantiate
+3. Don't forget to unmockAll() after mocking some singleton
+4. Test the whole behavior rather than just the final value
