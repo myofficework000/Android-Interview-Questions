@@ -5,9 +5,59 @@ Write Unit tests for viewmodel, Repository, Usecase independently, Avoid testing
 Make sure each test should be independent and not rely on other tests.
 Use StandardTestDispatcher for testing suspend functions and coroutines. StandardTestDispatcher is used to execute the coroutines synchronously. Also if there are any delays it will ignore them. So with standardTestDispatcher we can avoid race conditions and flakey test cases.
 
+@ExperimentalCoroutinesApi
+class MyViewModelTest {
+    
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    private val testDispatcher = StandardTestDispatcher() // Used to execute the coroutines synchronously
+    private lateinit var viewModel: MyViewModel
+    private val repository: MyRepository = mockk()
+
+    @Before
+    fun setup() {
+        Dispatchers.setMain(testDispatcher)  // Use test dispatcher as main
+        viewModel = MyViewModel(repository)
+    }
+
+    @Test
+    fun `fetchData updates LiveData correctly`() = runTest {
+        coEvery { repository.getData() } returns "Hello World"
+        viewModel.fetchData()
+        testDispatcher.scheduler.advanceUntilIdle()  // Simulate coroutine execution
+        assertEquals("Hello World", viewModel.data.getOrAwaitValue())
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()  // Clean up dispatcher
+    }
+}
+
+
+
+
 Don'ts
 Don’t Write Tests That Depend on Network Calls. Always mock API responses instead of making real network calls.
 Don’t Use Hardcoded Delays in Tests
 Don’t Ignore Flaky Tests. If a test fails randomly, debug and fix it instead of ignoring it.
 Don’t Run Tests on the Main Thread. Use runBlockingTest {} for coroutines to avoid ANRs.
 Don’t Ignore Code Coverage. Aim for at least 80% coverage but focus on critical paths.
+
+
+@Test
+fun `fetchData makes real API call`() = runBlocking {
+    val retrofit = Retrofit.Builder()
+        .baseUrl("https://api.example.com/")  // ❌ REAL API CALL
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(ApiService::class.java)
+
+    val repository = MyRepository(retrofit)
+    
+    val response = repository.fetchData()
+
+    assertNotNull(response)  // ❌ This test may fail if the API is down
+}
+
