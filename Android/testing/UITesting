@@ -1,1 +1,97 @@
 UI testing
+Setup Guidelines
+1. Use ComposeTestRule to Control UI Execution
+  @get:Rule
+  val composeTestRule = createAndroidComposeRule<MyActivity>()
+
+  @Test
+  fun testButtonClick_updatesText() {
+      composeTestRule.setContent {
+          MyScreen()
+      }
+  
+      // Find the button and click it
+      composeTestRule.onNodeWithText("Click Me").performClick()
+  
+      // Assert that the text has changed
+      composeTestRule.onNodeWithText("Button Clicked").assertExists()
+  }
+
+----------------------------------------------------------------
+2. Prefer Using onNodeWithText() and onNodeWithTag() for Finding Elements
+  It's a good practice to assign unique test tags
+  Text(
+    text = "Welcome",
+    modifier = Modifier.testTag("welcome_text")
+  )
+  @Test
+  fun testTextExists() {
+      composeTestRule.onNodeWithTag("welcome_text").assertExists()
+  }
+----------------------------------------------------------------
+3. Use assertIsDisplayed() Instead of Just assertExists()
+  @Test
+  fun testSnackbar_isVisible() {
+      composeTestRule.onNodeWithTag("snackbar").assertIsDisplayed()
+  }
+----------------------------------------------------------------
+4. Use performClick(), performTextInput(), and performImeAction() for User Interactions
+  @Test
+  fun testUserInputAndSubmit() {
+      composeTestRule.onNodeWithTag("name_input").performTextInput("John Doe")
+      composeTestRule.onNodeWithTag("submit_button").performClick()
+  
+      // Assert that the submitted name appears
+      composeTestRule.onNodeWithText("Hello, John Doe!").assertExists()
+  }
+----------------------------------------------------------------
+5. Synchronize with UI Using awaitIdle() and runOnIdle()
+  @Test
+  fun testAsyncOperation_updatesUI() {
+      composeTestRule.setContent {
+          MyAsyncScreen()
+      }
+  
+      composeTestRule.waitUntil(timeoutMillis = 5000) {
+          composeTestRule.onNodeWithText("Loaded").assertExists()
+      }
+  }
+----------------------------------------------------------------
+6. Prefer SemanticsMatcher for Complex Assertions
+  @Composable
+  fun SubmitButton(isEnabled: Boolean) {
+      Text(
+          text = "Submit",
+          modifier = Modifier
+              .semantics { contentDescription = "Submit Button" }
+              .clickable { /* Perform action */ },
+          style = MaterialTheme.typography.body1,
+          enabled = isEnabled
+      )
+  }
+  @Test
+  fun testSubmitButtonIsVisibleAndEnabled() {
+      // Set the Compose UI with the SubmitButton and enabled
+      composeTestRule.setContent {
+          SubmitButton(isEnabled = true)
+      }
+  
+      // Check if the Submit Button is visible and enabled
+      composeTestRule.onNode(
+          hasContentDescription("Submit Button") and isDisplayed() and isEnabled()
+      ).assertExists("Submit button should be displayed and enabled")
+  }  
+----------------------------------------------------------------
+7. Always Test UI State Changes
+  @Test
+  fun testToggleSwitch_changesState() {
+      composeTestRule.onNodeWithTag("dark_mode_switch").performClick()
+  
+      composeTestRule.onNodeWithText("Dark Mode Enabled").assertExists()
+  }
+----------------------------------------------------------------
+8. Clean Up Resources in @After
+  @After
+  fun tearDown() {
+      composeTestRule.activityRule.scenario.close() // Close the activity
+  }
