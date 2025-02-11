@@ -1,13 +1,179 @@
 Tell me 3 do's and don't of Unit testing, consider you are using mvvm as architecture and mockk as mocking framework.
 Do
 1. Test one thing at a time
+  Bad example:
+    @Test
+    fun `test fetch, process, and save data together`() {
+        every { repository.getData() } returns "rawData"
+        every { processor.process("rawData") } returns "processedData"
+        every { repository.save("processedData") } returns Unit
+    
+        val result = service.handleData()
+    
+        assertEquals("processedData", result)
+        verify { repository.getData() }
+        verify { processor.process("rawData") }
+        verify { repository.save("processedData") }  // Too many verifications in one test
+    }
+
+    Good example:
+    @Test
+    fun `should fetch data from repository`() {
+        every { repository.getData() } returns "rawData"
+    
+        val result = repository.getData()
+    
+        assertEquals("rawData", result)
+        verify { repository.getData() }
+    }
+    @Test
+    fun `should process data correctly`() {
+        every { processor.process("rawData") } returns "processedData"
+    
+        val result = processor.process("rawData")
+    
+        assertEquals("processedData", result)
+        verify { processor.process("rawData") }
+    }
+    @Test
+    fun `should save processed data`() {
+        every { repository.save("processedData") } returns Unit
+    
+        repository.save("processedData")
+    
+        verify { repository.save("processedData") }
+    }
+-------------------------------------------------------------------------------
 2. Use meaningful test name
+-------------------------------------------------------------------------------
 3. Try to cover all scenarios
+-------------------------------------------------------------------------------
 4. When working with coroutine, use standardTestDispatcher
+    @Before
+    fun setUp() {
+        testDispatcher = StandardTestDispatcher()
+        Dispatchers.setMain(testDispatcher)
+    }
 
+    @Test
+    fun `some test`() = runTest(testDispatcher) {
+    }
 
+-------------------------------------------------------------------------------
 Don't
 1. Don't test private method directly
+  Bad example:
+  class UserService {
+    private fun formatName(name: String): String = name.trim().uppercase()
+  }
+
+  class UserServiceTest {
+      @Test
+      fun `should format name correctly`() {
+          val userService = UserService()
+          val method = UserService::class.java.getDeclaredMethod("formatName", String::class.java)
+          method.isAccessible = true
+  
+          val result = method.invoke(userService, " John ")
+  
+          assertEquals("JOHN", result)  // ❌ Bad practice!
+      }
+  }
+
+  Good example:
+  class UserService {
+    fun getFormattedUserName(name: String): String = formatName(name)  // Expose behavior via public method
+
+    private fun formatName(name: String): String = name.trim().uppercase()
+  }
+
+  class UserServiceTest {
+      @Test
+      fun `should return formatted username`() {
+          val userService = UserService()
+          val result = userService.getFormattedUserName(" John ")
+  
+          assertEquals("JOHN", result)  // ✅ Test behavior, not private methods
+      }
+  }
+
+-------------------------------------------------------------------------------
 2. Don't mock what you can easily instantiate
+  Bad example:
+  data class User(val name: String, val age: Int)
+
+  @Test
+  fun `test user properties`() {
+      val user = mockk<User>()
+      every { user.name } returns "Alice"
+      every { user.age } returns 25
+  
+      assertEquals("Alice", user.name)  // ❌ Unnecessary mocking
+      assertEquals(25, user.age)
+  }
+
+  Good example:
+  @Test
+  fun `test user properties`() {
+      val user = User("Alice", 25)  // ✅ Direct instantiation is better
+  
+      assertEquals("Alice", user.name)
+      assertEquals(25, user.age)
+  }
+
+-------------------------------------------------------------------------------
 3. Don't forget to unmockAll() after mocking some singleton
+  Bad example:
+  object ConfigManager {
+      fun getConfig(): String = "Real Config"
+  }
+  
+  class ConfigManagerTest {
+      @Test
+      fun `test config manager`() {
+          mockkObject(ConfigManager)  // Mocking singleton
+          every { ConfigManager.getConfig() } returns "Mocked Config"
+  
+          assertEquals("Mocked Config", ConfigManager.getConfig())  // ✅ Works
+      }
+  
+      // ❌ No unmocking – This mock persists for other tests!
+  }
+
+  Good example:
+  class ConfigManagerTest {
+    @BeforeEach
+    fun setup() {
+        mockkObject(ConfigManager)
+    }
+
+    @Test
+    fun `test config manager`() {
+        every { ConfigManager.getConfig() } returns "Mocked Config"
+        assertEquals("Mocked Config", ConfigManager.getConfig())
+    }
+
+    @AfterEach
+    fun cleanup() {
+        unmockkAll()  // ✅ Cleanup to prevent test pollution
+    }
+  }
+
+
+-------------------------------------------------------------------------------
 4. Test the whole behavior rather than just the final value
+      val stateList = mutableListOf<Result<List<Photo>>>()
+      val job = launch {
+          viewModel.photoList.collect {
+              stateList.add(it)
+          }
+      }
+
+      advanceUntilIdle()
+      job.cancel()
+      // ✅ validate each phase then check the output
+      assert(stateList[0] is Result.Initial) // Initial
+      assert(stateList[1] is Result.Loading) // Loading state after query update
+      assert(stateList[2] is Result.Success) // Final success state
+      val successResult = stateList[2] as Result.Success
+      assert(successResult.data == fakePhotoList)
