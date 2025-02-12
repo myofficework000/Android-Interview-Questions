@@ -44,7 +44,7 @@
 - Purpose: Processes camera feed and detects barcodes
 - Key Functions:
   - Configures supported barcode formats
-  - Processes images from camera
+  - Processes images from the camera
   - Detects and decodes barcodes
   - Sends results to ViewModel
 - Features:
