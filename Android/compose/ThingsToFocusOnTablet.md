@@ -1,0 +1,1 @@
+https://medium.com/@sooryakanthvarma/revolutionising-ui-development-tablet-support-in-jetpack-compose-e2f07980d6fc#:~:text=Jetpack%20Compose%2C%20Google's%20modern%20UI,to%20create%20responsive%20layouts%20effortlessly.
