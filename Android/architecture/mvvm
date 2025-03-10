@@ -168,4 +168,12 @@ Input fields like EditText where user input needs to update the data source.
 26. Explain how to use a shared view model to send data from one fragment to another fragment in the same activity.
 27. How do we ignore ViewBinding class creation for some layout files?
 28. What is ViewModelFactory and why do we need ViewModelFactory?
-29. What are the differences between MVI and MVVM, and which one would you prefer?  
+29. What are the differences between MVI and MVVM, and which one would you prefer?
+30. How exactly viewmodel survives orientation change?
+When the screen is rotated, the current activity is destroyed, but we have the viewmodelstore which is an internal component
+that holds the viewmodel 	instance reference. And it will retain the instance as long as the associated activity is not completely finished like when the app is closed.
+And then after the recreation of the activity, the viewmodelprovider will be 	triggered again, it will check the hashmap in the viewmodel store.
+For this hashmap, the key is a string which represents the activity class, and the value is the associated viewmodel.
+So if it can not find such a key that of 	this particular activity then it will create a new viewmodel.
+But in our case, before the orientation change, there is already an existing viewmodel instance, so it will just reuse that viewmodel to restore former states.
+In this way, the viewmodel 	survives the orientation change.	
