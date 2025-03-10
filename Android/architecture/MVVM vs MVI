@@ -1,1 +1,14 @@
-What are the differences between MVI and MVVM, and which one would you prefer? 
+What are the differences between MVI and MVVM, and which one would you prefer?
+
+MVI is a reactive architecture pattern designed to manage UI states predictably.
+It emphasizes unidirectional data flow, ensuring a single source of truth for the UI.
+
+Similarly, MVI stands for three layers, model represents the state of the UI,often immutable and stored predictably;
+view is the UI layer that renders the state and emits user interactions;
+intent is the action or event triggered by the user or system and initiating state changes.
+
+Advantages: 
+Unidirectional flow ensures consistency and avoids race conditions.
+It is easier to debug and test since all states are predictable.
+Cooperate well with jetpack compose and kotlin flow.
+Plus all the advantages already in MVVM.
