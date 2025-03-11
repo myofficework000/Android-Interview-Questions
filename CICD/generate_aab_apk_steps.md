@@ -5,6 +5,8 @@ name: Generated APK AAB (Upload - Create Artifact To Github Action)
 env:
   # The name of the main module repository
   main_project_module: app
+  # The name of the Play Store
+  playstore_name: testing_store
 
 //Triggering conditions, we can trigger on push to the master branch
 //or trigger manually from the Actions tab
@@ -145,3 +147,43 @@ It analyzes your source code for potential issues, including:
 ·Vulnerabilities (e.g., security flaws like SQL injection)
 
 instead of directly use build command, we set up maven and delegate maven to to handle the build and compilation process.
+-----------------------------------------------------------------------------------
+to use this yml file, save it in the git repo,
+.github/workflows/ci.yml
+
+GitHub Actions automatically detects it
+When you push to master, GitHub Actions triggers the workflow.
+You can also run it manually from the "Actions" tab.
+-----------------------------------------------------------------------------------
+GitHub Actions can handle CD by adding deployment steps:
+
+Deploy to Google Play Store (via fastlane or Google Play API).
+Upload to Firebase App Distribution for testing.
+Trigger a deployment script to a server.
+
+Example
+env:
+  firebase_app_id: your_firebase_app_id
+
+steps:
+      # Upload Debug APK to Firebase App Distribution for testing
+      - name: Upload Debug APK to Firebase
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ env.firebase_app_id }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: testers
+          file: ${{ env.main_project_module }}/build/outputs/apk/debug/app-debug.apk
+
+      
+      # Upload Release AAB to Google Play Store using Fastlane
+      - name: Deploy AAB to Google Play Store
+        run: |
+          bundle install # Install fastlane dependencies
+          fastlane supply --track production \
+                         --json_key "${{ secrets.PLAYSTORE_JSON_KEY }}" \
+                         --aab ${{ env.main_project_module }}/build/outputs/bundle/release/app-release.aab \
+                         --package_name com.example.myapp
+
+·Pros: Simple, integrated with GitHub.
+·Cons: Limited flexibility compared to Jenkins， like deploy to multiple environments
