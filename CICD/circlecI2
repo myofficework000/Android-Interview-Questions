@@ -20,4 +20,66 @@ Imagine you’re working on a mobile app. Instead of manually testing and deploy
 🔹 Why Use CircleCI?
 CircleCI helps teams automate, optimize, and accelerate software development, reducing manual errors and ensuring every release is high quality. 🚀
 
+# 🚀 CircleCI Basics & Setup Guide  
+
+![CircleCI](https://img.shields.io/badge/CircleCI-343434?style=for-the-badge&logo=circleci&logoColor=white)
+
+## 📌 Introduction  
+[CircleCI](https://circleci.com/) is a **CI/CD platform** that automates the testing and deployment of software projects. It supports Docker, Linux, macOS, and Windows environments.
+
+This repository provides a **basic understanding** of CircleCI, including:  
+✅ Setting up CircleCI for your project  
+✅ Writing a `.circleci/config.yml` file  
+✅ Running builds & tests  
+✅ Continuous deployment  
+
+---
+
+## 🔧 Prerequisites  
+Before setting up CircleCI, ensure you have:  
+- A **GitHub** or **Bitbucket** repository  
+- Access to [CircleCI](https://circleci.com/)  
+- A **config.yml** file inside a `.circleci/` directory  
+
+---
+
+## ⚙️ Setting Up CircleCI  
+1. **Sign in to CircleCI** using GitHub or Bitbucket.  
+2. **Create a new project** and link it to your repository.  
+3. **Add a `.circleci/config.yml` file** to your repository.  
+4. **Push your changes** to trigger the pipeline.  
+
+---
+
+## 📄 Sample `.circleci/config.yml`  
+
+```yaml
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:16
+    steps:
+      - checkout
+      - run: echo "🛠 Running build step"
+      - run: npm install
+      - run: npm test
+
+  deploy:
+    docker:
+      - image: circleci/node:16
+    steps:
+      - checkout
+      - run: echo "🚀 Deploying the application"
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+
 Let me know if you want a more detailed breakdown! 😊
