@@ -1,22 +1,70 @@
 # 🧩 Jetpack Compose
 
-- **What is Jetpack Compose and how is it different from XML-based UI?**
-- **Why did Google introduce Jetpack Compose?**
-- **What are Composables in Jetpack Compose?**
-- **What are Modifiers and how do you use them?**
-- **How do Box, Row, and Column differ in Compose layouts?**
-- **What is the use of Scaffold in Compose?**
-- **How does Compose handle theming and Material Design?**
-- **How do you manage state in Jetpack Compose?**
-- **What is state hoisting in Compose and why is it important?**
-- **What’s the difference between `remember` and `rememberSaveable`?**
-- **What is a SideEffect in Jetpack Compose? What types are available (`LaunchedEffect`, `DisposableEffect`, etc.)?**
-- **Does Jetpack Compose have a lifecycle?**
-- **How do you create a custom Composable?**
-- **How do you use `LazyColumn` in Compose and how does it differ from `RecyclerView`?**
-- **How can you add headers or footers in a `LazyColumn`?**
-- **How does Compose handle navigation?**
-- **What is `ComposeView` and `AndroidView` in Compose?**
+### 1. What is Jetpack Compose and how is it different from XML-based UI?
+- modern, declarative UI toolkit
+- introduced by google, part of android jetpack
+- 100% in kotlin, no need xml layout resource file 
+### 2. Why did Google introduce Jetpack Compose?
+- better performance
+- easy to customize UI dynamically
+- higher code reusability 
+### 3. What are Composables in Jetpack Compose?
+- building block of compose
+- defined hierarchically
+- instruct system to create UI components
+### 4. What are Modifiers and how do you use them?
+- decorate and configure UI elements
+- chain multiple modifier functions to apply multiple effects in sequence
+- eg. height, width, padding, background, clickable 
+### 5. How do Box, Row, and Column differ in Compose layouts?
+- Box: simple, layering and alignment
+- Row, Column: need both alignment and arrangement, can manage the scroll state
+### 6. What is the use of Scaffold in Compose?
+- automatic insets and innerPadding handling
+- smart layout arrangement
+- works well with TopAppBar, BottomNavigation, FAB and Drawer
+### 7. How does Compose handle theming and Material Design?
+- Material theme: apply consistent colors, typography and shapes across the app
+- built-in support for Light and Dark Themes
+- fully supports material and meterial3 components
+- can adjust custom styling
+### 8. How do you manage state in Jetpack Compose?
+- state change, recomposition
+- mutableStateOf
+- remember, remembersavable
+- external state, observeAsState(), collectAsState()
+### 9. What is state hoisting in Compose and why is it important?
+- moving the state variables to higher level composable and and pass it as para
+- higher reusability of UI components
+- more clear state management
+- better separation of concern and testability 
+### 10. What’s the difference between `remember` and `rememberSaveable`?
+- remember: retain state across recomposition
+- rememberSavable: also survive the configuation change
+### 11. What is a SideEffect in Jetpack Compose? What types are available (`LaunchedEffect`, `DisposableEffect`, etc.)?
+- trigger external oprations
+- LaunchedEffect: launch a coroutine tied to current composable's lifecycle
+- rememberCoroutineScope: run some suspend function in composable
+- DisposableEffect: do some clean up in onDispose{} 
+### 12. Does Jetpack Compose have a lifecycle?
+- implicit: composition -> recomposition -> dispose
+### 13. How do you create a custom Composable?
+- pass the modifier or some other specific style argument and lambda as para to a reusable composable
+### 14. How do you use `LazyColumn` in Compose and how does it differ from `RecyclerView`?
+- easier syntax, no need adapter and viewholder
+- better state management, and recomposition, no need notifyDataSetChanged()
+- can use key attribute in lazyitems to recompose only affected items rather than whole list
+- no layoutmanager, need to use different composables to achieve grid and staggered
+### 15. How can you add headers or footers in a `LazyColumn`?
+- item() before or after the items()
+### 16. How does Compose handle navigation?
+- navigation graph
+- navhost
+- navcontroller
+- existing UI components like: top bar, bottom navigation bar, drawer, etc.
+### 17. What is `ComposeView` and `AndroidView` in Compose?
+- use AndroidView to embed xml layout resourcefile into a composable function
+- use ComposeView to embed an exsiting composable into xml as a tag
 
 🧩 Write syntax examples for:
 BottomSheet
