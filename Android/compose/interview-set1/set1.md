@@ -1,21 +1,22 @@
-🧩 Jetpack Compose
-What is Jetpack Compose and how is it different from XML-based UI?
-Why did Google introduce Jetpack Compose?
-What are Composables in Jetpack Compose?
-What are Modifiers and how do you use them?
-How do Box, Row, and Column differ in Compose layouts?
-What is the use of Scaffold in Compose?
-How does Compose handle theming and Material Design?
-How do you manage state in Jetpack Compose?
-What is state hoisting in Compose and why is it important?
-What’s the difference between remember and rememberSaveable?
-What is a SideEffect in Jetpack Compose? What types are available (LaunchedEffect, DisposableEffect, etc.)?
-Does Jetpack Compose have a lifecycle?
-How do you create a custom Composable?
-How do you use LazyColumn in Compose and how does it differ from RecyclerView?
-How can you add headers or footers in a LazyColumn?
-How does Compose handle navigation?
-What is ComposeView and AndroidView in Compose?
+# 🧩 Jetpack Compose
+
+- **What is Jetpack Compose and how is it different from XML-based UI?**
+- **Why did Google introduce Jetpack Compose?**
+- **What are Composables in Jetpack Compose?**
+- **What are Modifiers and how do you use them?**
+- **How do Box, Row, and Column differ in Compose layouts?**
+- **What is the use of Scaffold in Compose?**
+- **How does Compose handle theming and Material Design?**
+- **How do you manage state in Jetpack Compose?**
+- **What is state hoisting in Compose and why is it important?**
+- **What’s the difference between `remember` and `rememberSaveable`?**
+- **What is a SideEffect in Jetpack Compose? What types are available (`LaunchedEffect`, `DisposableEffect`, etc.)?**
+- **Does Jetpack Compose have a lifecycle?**
+- **How do you create a custom Composable?**
+- **How do you use `LazyColumn` in Compose and how does it differ from `RecyclerView`?**
+- **How can you add headers or footers in a `LazyColumn`?**
+- **How does Compose handle navigation?**
+- **What is `ComposeView` and `AndroidView` in Compose?**
 
 🧩 Write syntax examples for:
 BottomSheet
