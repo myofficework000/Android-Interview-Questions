@@ -66,12 +66,24 @@
 - use AndroidView to embed xml layout resourcefile into a composable function
 - use ComposeView to embed an exsiting composable into xml as a tag
 
-🧩 Write syntax examples for:
-BottomSheet
-Top Tabs
-DropdownMenu
-Bottom Navigation Bar
-Swipe to Delete
+# 🧩 Write syntax examples for:
+### 1. BottomSheet
+- ModalBottomSheetLayout(sheetState, sheetContent){  
+    //MainContent  
+  }  
+### 2. Top Tabs
+- TopAppBar(title, action)
+- HorizontalPager(pageState, count)
+- TabRow(selectedIndex)
+### 3. DropdownMenu
+- DropdownMenu(expanded, onDismissRequest){  
+  //iterate the list and apply DropdownMenuItem()  
+  }
+### 4. Bottom Navigation Bar
+- BottomNavigation{ BottomNavigationItem() }
+### 5.Swipe to Delete
+- manually impl AnchoredDraggable
+- SwipeToDismissBox from material3
 
 🧩 MVVM, MVI & Clean Architecture
 What is MVVM? How is it implemented in Android?
