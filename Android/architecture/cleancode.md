@@ -1,4 +1,4 @@
-Clean code
+# Clean code
 
 1. How do you ensure separation of concerns and maintainability in an MVVM-based Android app? Can you provide an example where improper separation caused issues?
 Answer:
