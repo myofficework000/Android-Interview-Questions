@@ -65,3 +65,116 @@ Extension functions are compiled as static functions:
 fun String.hello() = "Hello $this"
 ```
 
+## 8. What is @JvmOverloads?
+Used to generate overloads for default parameter functions for Java interoperability.
+```kotlin
+@JvmOverloads
+fun greet(name: String = "Guest", age: Int = 18) {
+    println("Hello $name, age $age")
+}
+```
+
+## 9. What is a Lambda Function?
+Anonymous function used for functional programming.
+```kotlin
+val square = { x: Int -> x * x }
+println(square(4)) // 16
+```
+
+## 10. How to Declare Lambda Function?
+```kotlin
+val sum: (Int, Int) -> Int = { a, b -> a + b }
+```
+
+## 11. What is a Higher-Order Function?
+Takes functions as parameters or returns them.
+```kotlin
+fun calculate(a: Int, b: Int, op: (Int, Int) -> Int): Int {
+    return op(a, b)
+}
+
+val result = calculate(4, 2) { x, y -> x * y }
+```
+
+## 12. What is an Inline Function?
+Suggests compiler to inline the function's bytecode to avoid overhead.
+```kotlin
+inline fun runTimed(block: () -> Unit) {
+    val start = System.currentTimeMillis()
+    block()
+    val end = System.currentTimeMillis()
+    println("Time taken: ${end - start} ms")
+}
+```
+
+## 13. What is an Infix Function?
+Custom infix notation for better readability.
+
+```kotlin
+infix fun Int.times(str: String) = str.repeat(this)
+val result = 2 times "Hi " // Hi Hi 
+```
+
+## 14. What is a tailrec Function?
+Optimized recursive function that prevents stack overflow.
+```kotlin
+tailrec fun factorial(n: Int, acc: Int = 1): Int {
+    return if (n == 0) acc else factorial(n - 1, acc * n)
+}
+```
+
+## 15. What is Primary, Secondary Constructor and init Block?
+```kotlin
+class User(val name: String) {
+    init {
+        println("Init block called")
+    }
+
+    constructor(name: String, age: Int) : this(name) {
+        println("Secondary constructor called")
+    }
+}
+```
+- Primary constructor: Part of class header.
+- Secondary constructor: Uses constructor.
+- init block: Executes after primary constructor.
+
+## 16. What is the Relationship Between Primary and Secondary Constructors?
+Secondary constructors must delegate to the primary one using this(...).
+
+## 17. What is a Data Class?
+Special class that automatically generates:
+```kotlin
+equals()
+hashCode()
+toString()
+copy()
+componentN()
+data class User(val name: String, val age: Int)
+```
+
+## 18. What is a Sealed Class?
+Used to represent restricted class hierarchies.
+
+sealed class Result
+data class Success(val data: String): Result()
+data class Error(val error: String): Result()
+Ideal with when expressions for exhaustive checks.
+
+## 19. What is open, final, and abstract?
+open: Allows inheritance/overriding
+final: Prevents inheritance (default)
+abstract: Must be overridden
+
+## 20. What is a Companion Object?
+Static-like members for a class.
+```kotlin
+class Logger {
+    companion object {
+        fun log(msg: String) = println(msg)
+    }
+}
+
+Logger.log("Hello")
+```
+
